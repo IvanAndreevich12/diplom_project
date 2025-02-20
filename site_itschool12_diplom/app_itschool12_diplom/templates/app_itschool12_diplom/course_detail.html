@@ -1,0 +1,64 @@
+{% extends 'app_itschool12_diplom/base.html' %}
+
+{% block content %}
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.description }}</p>
+
+    <p>
+        <strong>Преподаватель:</strong>
+        {% if course.teacher %}
+            {{ course.teacher.first_name }} {{ course.teacher.last_name }}
+        {% else %}
+            Преподаватель не назначен
+        {% endif %}
+    </p>
+
+    <p>
+        <strong>Даты:</strong>
+        {% if course.start_date and course.end_date %}
+            с {{ course.start_date|date:"d.m.Y" }} по {{ course.end_date|date:"d.m.Y" }}
+        {% elif course.start_date %}
+            с {{ course.start_date|date:"d.m.Y" }}
+        {% elif course.end_date %}
+            до {{ course.end_date|date:"d.m.Y" }}
+        {% else %}
+            Даты не указаны
+        {% endif %}
+    </p>
+    <p><strong>Количество студентов:</strong> {{ course.students.count }}</p>
+    
+    {% if user.is_authenticated %}
+        {% if is_enrolled %}
+            <p>Вы записаны на этот курс.</p>
+        {% else %}
+            <a href="{% url 'enroll_course' course.pk %}" class="btn btn-primary mb-3">Записаться на курс</a>
+        {% endif %}
+    {% else %}
+        <p>Пожалуйста, <a href="{% url 'login' %}">войдите</a>, чтобы записаться на курс.</p>
+    {% endif %}    
+
+    <h2>Уроки</h2>
+    {% if is_enrolled %}
+        {% if course.lessons.all %}
+            <div class="row">
+                {% for lesson in course.lessons.all %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ lesson.title }}</h5>
+                                <a href="{% url 'lesson_detail' course.pk lesson.pk %}" class="btn btn-primary">Перейти к уроку</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Уроки не найдены.</p>
+        {% endif %}
+    {% else %}
+        <p>Запишитесь на курс, чтобы увидеть уроки.</p>
+    {% endif %}
+
+    <p class="mt-4"><a href="javascript:history.back()" class="btn btn-secondary">Назад</a></p>
+
+{% endblock %}

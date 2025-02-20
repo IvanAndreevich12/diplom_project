@@ -1,0 +1,28 @@
+{% extends 'app_itschool12_diplom/base.html' %}
+
+{% block content %}
+    <h1>Список курсов</h1>
+
+    {% if courses %}
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ course.title }}</h4>
+                            <p class="card-text">{{ course.description }}</p>
+                            <p><strong>Преподаватель:</strong> {% if course.teacher %}{{ course.teacher.first_name }} {{ course.teacher.last_name }}{% else %}Преподаватель не назначен{% endif %}</p>
+                            <p><strong>Количество студентов:</strong> {{ course.students.count }}</p>
+                            <a href="{% url 'course_detail' course.pk %}" class="btn btn-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
+        </div>
+    {% else %}
+        <p>Курсов пока нет.</p>
+    {% endif %}
+{% endblock %}

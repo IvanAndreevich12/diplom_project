@@ -1,0 +1,22 @@
+{% extends 'app_itschool12_diplom/base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center">{{ lesson.title }}</h1>
+        <div class="lesson-content mt-4">
+            {{ lesson.content | safe }} {# Используйте safe filter для корректного отображение HTML #}
+        </div>
+
+        {% if lesson.materials %}
+            <div class="lesson-materials mt-4">
+                <h3>Материалы урока</h3>
+                <p>Материалы доступны для просмотра.</p>
+            </div>
+        {% endif %}
+
+        <!--  Здесь будет контент урока, материалы, задания -->
+        <div class="text-center mt-4">
+            <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
+{% endblock %}
